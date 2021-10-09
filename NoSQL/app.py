@@ -1,5 +1,7 @@
-from flask import Flask, json, session, request, redirect, url_for
+from flask import Flask, json, session, request, redirect, url_for, send_from_directory
 from datetime import datetime
+import time
+import random
 import csv
 import os
 import magic # python-magic
@@ -17,6 +19,7 @@ DYNAMO_TABLE = ''
 REGION = ''
 LOCAL_FILE_FOLDER = './upload'
 REMOTE_FILE_FOLDER = 'files'
+LOCAL_DOWNLOAD_FOLDER = './download'
 
 ALLOWED_EXTENSIONS = {'csv'}
 ALLOWED_MIME_TYPES = {'text/csv', 'text/plain'}
@@ -41,6 +44,9 @@ def load_config():
     BUCKET_NAME = config['AWS']['BUCKET_NAME']
     DYNAMO_TABLE = config['AWS']['DYNAMO_TABLE']
     REGION = config['AWS']['REGION']
+
+def current_milli_time():
+    return round(time.time() * 1000)
 
 api = Flask(__name__)
 api.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
@@ -175,6 +181,26 @@ def get_s3_content():
     except Exception as err:
         print(err)
         return ''
+
+@api.route('/downloads3/<path:remotefile>', methods=['GET'])
+def download_s3_file(remotefile):
+    # Download the s3 file binary
+
+    try:
+        random_hash = random.getrandbits(128)
+        tmp_file = "{}_{}".format(current_milli_time(), random_hash)
+        download_tmp_file = "{}/{}".format(LOCAL_DOWNLOAD_FOLDER, tmp_file)
+        s3_obj = S3Utility(BUCKET_NAME, AWS_SERVER_ACCESS_KEY, AWS_SERVER_SECRET_KEY)
+        success = s3_obj.download_file(remotefile, download_tmp_file)
+        if success == True:
+            data = send_from_directory(directory=LOCAL_DOWNLOAD_FOLDER, path=tmp_file, filename=tmp_file)
+            os.unlink(download_tmp_file)
+            return data
+        else:
+            return '{"result": Fail}'
+    except Exception as err:
+        print(err)
+        return '{"result": Fail}'
 
 @api.route('/s3', methods=['POST'])
 def post_s3_content():

@@ -17,8 +17,7 @@ pip3 install -r requirements.txt
 - Use AWS Management Console Web
 ![S3 bucket](NoSQL/screenshot/s3_ui.png)
 ![DynamoBDB Item](NoSQL/screenshot/dynamodb_table_ui.png)
-![DynamoBDB Item](NoSQL/screenshot/dynamodb_item_ui.png)
-- Use python code
+- Or you can use python code to create a DynamoDB Table
 ```
 cd NoSQL
 python3 dynamodb_creator.py
@@ -27,6 +26,7 @@ python3 dynamodb_creator.py
 ### Launch RESTful API Server
 - Command:
 ```
+cd NoSQL
 python3 app.py
 ```
 - Once you launch the server, you can access the server with port 5000
@@ -65,6 +65,7 @@ The API will return the data info in the DynamoDB table
 ```
 - Result:
 ![DynamoDB table update result](NoSQL/screenshot/dynamodb_table.png)
+![DynamoBDB Item](NoSQL/screenshot/dynamodb_item_ui.png)
 
 ### Get S3 file structure
 - Command:
@@ -82,9 +83,20 @@ The API will return the row data
 - Result:
 ![Query the row data](NoSQL/screenshot/dynamodb_query.png)
 
+### Download the file from AWS S3
+- Once you query the data in DynamoDB Table, you will get the remote file path. You can download the file by using the API below.
+- Command:
+```
+curl "http://127.0.0.1:5000/downloads3/files/exp2.csv"
+or
+curl "http://127.0.0.1:5000/downloads3/files/exp2.csv" -o ./exp2.csv
+```
+- Result:
+![Download the file from S3](NoSQL/screenshot/download_s3_file.png)
+
 -------
 
-## Use AWS CLI
+## Use AWS CLI to Query DynamoDB Table
 ### Install AWS CLI
 - Follow the instruction to install aws cli:
 https://docs.aws.amazon.com/cli/latest/userguide/welcome-versions.html#welcome-versions-v2
