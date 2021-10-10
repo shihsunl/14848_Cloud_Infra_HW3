@@ -6,6 +6,7 @@
 ### Install requirements
 - Command:
 ```
+cd NoSQL
 pip3 install -r requirements.txt 
 ```
 
