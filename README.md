@@ -97,6 +97,23 @@ curl "http://127.0.0.1:5000/downloads3/files/exp2.csv" -o ./exp2.csv
 
 -------
 
+## Code Inspection
+- You can check `dynamodb_creator.py`, it will create DynamoDB table named DataTable.
+![create DynamoDB table](NoSQL/screenshot/create_dynamodb_table.png)
+
+- I created an `aws_util` to initialize AWS resource
+![aws_utiliy](NoSQL/screenshot/aws_utiliy.png)
+
+- Then, I created an S3Utility class and DynamoDBUtility to encapsulate the function related to AWS S3 and DynamoDB (get data/upload file).
+![s3_utility](NoSQL/screenshot/s3_utility.png)
+![dynamodb_utility](NoSQL/screenshot/dynamodb_utility.png)
+
+- User can simply use these two class to access AWS S3 and DynamoDB
+![get_s3_data](NoSQL/screenshot/get_s3_data.png)
+![get_table_content](NoSQL/screenshot/get_table_content.png)
+
+-------
+
 ## Use AWS CLI to Query DynamoDB Table
 ### Install AWS CLI
 - Follow the instruction to install aws cli:
