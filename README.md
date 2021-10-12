@@ -108,7 +108,7 @@ curl "http://127.0.0.1:5000/downloads3/files/exp2.csv" -o ./exp2.csv
 ![s3_utility](NoSQL/screenshot/s3_utility.png)
 ![dynamodb_utility](NoSQL/screenshot/dynamodb_utility.png)
 
-- User can simply use these two class to access AWS S3 and DynamoDB to get data or upload data.
+- User can simply use these two classes to access AWS S3 and DynamoDB to get data or upload data.
 ![get_s3_data](NoSQL/screenshot/get_s3_data.png)
 ![get_table_content](NoSQL/screenshot/get_table_content.png)
 
