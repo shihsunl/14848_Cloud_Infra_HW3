@@ -9,6 +9,36 @@ class S3Utility():
         self.session         = self.aws_util_obj.init_aws_session()
         self.s3, self.bucket = self.aws_util_obj.init_aws_s3_resource(self.session)
 
+    def create_bucket(self, bucket_name):
+        try:
+            bucket = self.s3.create_bucket(Bucket=bucket_name, ACL='public-read', CreateBucketConfiguration={'LocationConstraint': 'us-west-1'})
+            self.bucket_name     = bucket_name
+            self.aws_util_obj    = AWSUtility(self.bucket_name, '', '', self.aws_access_key, self.aws_secret_key)
+            self.session         = self.aws_util_obj.init_aws_session()
+            self.s3, self.bucket = self.aws_util_obj.init_aws_s3_resource(self.session)
+            print(bucket)
+            return True
+        except Exception as err:
+            return self.error_msg_handler(err, False)
+
+    def create_folder(self, folder_name):
+        try:
+            res = self.bucket.put_object(Bucket=self.bucket_name, Key=(folder_name+'/'), ACL='public-read')
+            print(res)
+            return True
+        except Exception as err:
+            return self.error_msg_handler(err, False)
+
+    def change_bucket(self, bucket_name):
+        try:
+            self.bucket_name     = bucket_name
+            self.aws_util_obj    = AWSUtility(self.bucket_name, '', '', self.aws_access_key, self.aws_secret_key)
+            self.session         = self.aws_util_obj.init_aws_session()
+            self.s3, self.bucket = self.aws_util_obj.init_aws_s3_resource(self.session)
+            return True
+        except Exception as err:
+            return self.error_msg_handler(err, False)
+
     def error_msg_handler(self, err, output):
         print(err)
         return output

@@ -18,9 +18,10 @@ pip3 install -r requirements.txt
 - Use AWS Management Console Web
 ![S3 bucket](NoSQL/screenshot/s3_ui.png)
 ![DynamoBDB Item](NoSQL/screenshot/dynamodb_table_ui.png)
-- Or you can use python code to create a DynamoDB Table
+- Or you can use python code to create a DynamoDB Table and a S3 bucket
 ```
 cd NoSQL
+python3 s3_bucket_creator.py
 python3 dynamodb_creator.py
 ```
 
@@ -101,11 +102,15 @@ curl "http://127.0.0.1:5000/downloads3/files/exp2.csv" -o ./exp2.csv
 - For creating a DynamoDB table, you can check `dynamodb_creator.py`. It will create DynamoDB table named DataTable.
 ![create DynamoDB table](NoSQL/screenshot/create_dynamodb_table.png)
 
+- For creating a S3 bucket, you can check `s3_bucket_creator.py`. It will create S3 bucket named s3-14848-shihsunl and create 3 folders: files, log and test.
+![create DynamoDB table](NoSQL/screenshot/s3_bucket_creator.png)
+
 - In this API Server Project, I created an `aws_util` to initialize AWS resource.
 ![aws_utiliy](NoSQL/screenshot/aws_utiliy.png)
 
 - Then, I created a S3Utility class and DynamoDBUtility to encapsulate the function related to AWS S3 and DynamoDB (get data/upload file).
-![s3_utility](NoSQL/screenshot/s3_utility.png)
+![s3_utility](NoSQL/screenshot/s3_utility1.png)
+![s3_utility](NoSQL/screenshot/s3_utility2.png)
 ![dynamodb_utility](NoSQL/screenshot/dynamodb_utility.png)
 
 - User can simply use these two classes to access AWS S3 and DynamoDB to get data or upload data.
