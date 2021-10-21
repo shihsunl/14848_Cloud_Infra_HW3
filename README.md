@@ -7,7 +7,8 @@
 - Command:
 ```
 cd NoSQL
-pip3 install -r requirements.txt 
+pip3 install -r requirements.txt # for Ubuntu 18.04
+pip3 install -r requirements_macos.txt # for macOS Catalina 10.15.6
 ```
 
 ### Configuration setup
