@@ -2,6 +2,7 @@ import boto3
 import os
 from util.aws_util import AWSUtility
 from util.config_util import ConfigUtility
+from util.dynamodb_util import DynamoDBUtility
 
 AWS_SERVER_ACCESS_KEY = ''
 AWS_SERVER_SECRET_KEY = ''
@@ -28,37 +29,29 @@ def load_config():
     DYNAMO_TABLE          = config['AWS']['DYNAMO_TABLE']
     REGION                = config['AWS']['REGION']
 
-load_config()
+if __name__ == '__main__':
+    load_config()
+    dynamodb_obj = DynamoDBUtility(DYNAMO_TABLE, REGION, AWS_SERVER_ACCESS_KEY, AWS_SERVER_SECRET_KEY)
+    table_info = dynamodb_obj.get_table_count()
+    print(table_info)
 
-session = boto3.Session(
-    aws_access_key_id=AWS_SERVER_ACCESS_KEY,
-    aws_secret_access_key=AWS_SERVER_SECRET_KEY,
-)
-
-dynamodb = session.resource('dynamodb', region_name='us-west-1')
-table = dynamodb.create_table(
-    TableName='DataTable',
-    KeySchema=[
+    key_schema=[
         {
             'AttributeName': 'PartitionKey',
             'KeyType': 'HASH'
         }
-    ],
-    AttributeDefinitions=[
+    ]
+    attribute_definitions=[
         {
             'AttributeName': 'PartitionKey',
             'AttributeType': 'S'
         }
-    ],
-    ProvisionedThroughput={
+    ]
+    provisioned_throughput={
         'ReadCapacityUnits': 5,
         'WriteCapacityUnits': 5
     }
-)
+    new_table_name = "DataTable"
+    dynamodb_obj.create_table(new_table_name, key_schema, attribute_definitions, provisioned_throughput)
 
-# Wait until the table exists.
-table.meta.client.get_waiter('table_exists').wait(TableName='DataTable')
-
-# Print out some data about the table.
-print(table.item_count)
 

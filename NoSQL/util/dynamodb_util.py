@@ -10,6 +10,27 @@ class DynamoDBUtility():
         self.session         = self.aws_util_obj.init_aws_session()
         self.dynamodb, self.dytable = self.aws_util_obj.init_aws_dynamodb_resource(self.session)
 
+    def create_table(self, table_name, key_schema, attribute_definitions, provisioned_throughput):
+        try:
+            table = self.dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=key_schema,
+                AttributeDefinitions=attribute_definitions,
+                ProvisionedThroughput=provisioned_throughput
+            )
+
+            # Wait until the table exists.
+            table.meta.client.get_waiter('table_exists').wait(TableName=table_name)
+
+            self.dynamodb_table  = table_name
+            self.aws_util_obj    = AWSUtility('', self.dynamodb_table, self.region, self.aws_access_key, self.aws_secret_key)
+            self.session         = self.aws_util_obj.init_aws_session()
+            self.dynamodb, self.dytable = self.aws_util_obj.init_aws_dynamodb_resource(self.session)
+
+            return True
+        except Exception as err:
+            return self.error_msg_handler(err, False)
+
     def error_msg_handler(self, err, output):
         print(err)
         return output

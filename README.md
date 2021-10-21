@@ -112,7 +112,8 @@ curl "http://127.0.0.1:5000/downloads3/files/exp2.csv" -o ./exp2.csv
 - Then, I created a S3Utility class and DynamoDBUtility to encapsulate the function related to AWS S3 and DynamoDB (get data/upload file).
 ![s3_utility](NoSQL/screenshot/s3_utility1.png)
 ![s3_utility](NoSQL/screenshot/s3_utility2.png)
-![dynamodb_utility](NoSQL/screenshot/dynamodb_utility.png)
+![dynamodb_utility](NoSQL/screenshot/dynamodb_utility1.png)
+![dynamodb_utility](NoSQL/screenshot/dynamodb_utility2.png)
 
 - User can simply use these two classes to access AWS S3 and DynamoDB to get data or upload data.
 ![get_s3_data](NoSQL/screenshot/get_s3_data.png)
